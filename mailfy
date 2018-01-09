@@ -1,4 +1,4 @@
 #! /usr/bin/env sh
 args="$@"
 echo $args
-docker run --rm --name osrframework -t osrframework "mailfy.py $args"
+docker run --rm --name osrframework -t eyedeekay/osint_complex:osrframework "mailfy.py $args"

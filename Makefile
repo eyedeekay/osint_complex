@@ -1,6 +1,8 @@
 
 export PREFIX=/usr/local/
 
+export REMOTE=eyedeekay/osint_complex:
+
 dummy:
 
 .build: nmap-docker-build osrframework-docker-build theharvester-docker-build
@@ -17,14 +19,14 @@ clean:
 clobber: clean buildclean
 	rm -rf nmap-vulners osrframework theharvester
 
-rebuild: clobber build osrframework-run
+rebuild: clobber build nmap-vuln osrframework-run harvester
 
 install: build nmap-install osrframework-install theharvester-install
 
 remove: nmap-remove
 
 nmap-docker-build: nmap-vulners
-	docker build -f Dockerfile.nmap -t nmap-vulners .
+	docker build -f Dockerfile.nmap -t "$(REMOTE)nmap-vulners" .
 
 nmap-docker-clobber:
 	docker rm -f nmap-vulners 1>/dev/null 2>/dev/null; true
@@ -32,7 +34,7 @@ nmap-docker-clobber:
 nmap-shortcut:
 	@echo "#! /usr/bin/env sh"
 	@echo "args=\"\$$@\""
-	@echo "docker run --rm --name nmap-vulners -t n\"map-vulners \$$args\""
+	@echo "docker run --rm --name nmap-vulners -t $(REMOTE)nmap-vulners \$$args\""
 
 nmap-vuln:
 	make -s nmap-shortcut | tee nmap-vuln
@@ -48,7 +50,7 @@ nmap-vulners:
 	git clone https://github.com/vulnersCom/nmap-vulners.git
 
 osrframework-docker-build: osrframework
-	docker build -f Dockerfile.osrframework -t osrframework .
+	docker build -f Dockerfile.osrframework -t "$(REMOTE)osrframework" .
 
 osrframework-docker-clobber:
 	docker rm -f osrframework 1>/dev/null 2>/dev/null; true
@@ -57,13 +59,13 @@ osrframework-shortcut:
 	@echo "#! /usr/bin/env sh"
 	@echo "args=\"\$$@\""
 	@echo "echo \$$args"
-	@echo "docker run --rm --name osrframework -t osrframework \"osrfconsole.py \$$args\""
+	@echo "docker run --rm --name osrframework -t $(REMOTE)osrframework \"osrfconsole.py \$$args\""
 
 usufy-shortcut:
 	@echo "#! /usr/bin/env sh"
 	@echo "args=\"\$$@\""
 	@echo "echo \$$args"
-	@echo "docker run --rm --name osrframework -t osrframework \"usufy.py \$$args\""
+	@echo "docker run --rm --name osrframework -t $(REMOTE)osrframework \"usufy.py \$$args\""
 
 usufy:
 	make -s usufy-shortcut | tee usufy
@@ -72,7 +74,7 @@ mailfy-shortcut:
 	@echo "#! /usr/bin/env sh"
 	@echo "args=\"\$$@\""
 	@echo "echo \$$args"
-	@echo "docker run --rm --name osrframework -t osrframework \"mailfy.py \$$args\""
+	@echo "docker run --rm --name osrframework -t $(REMOTE)osrframework \"mailfy.py \$$args\""
 
 mailfy:
 	make -s mailfy-shortcut | tee mailfy
@@ -81,7 +83,7 @@ searchfy-shortcut:
 	@echo "#! /usr/bin/env sh"
 	@echo "args=\"\$$@\""
 	@echo "echo \$$args"
-	@echo "docker run --rm --name osrframework -t osrframework \"searchfy.py \$$args\""
+	@echo "docker run --rm --name osrframework -t $(REMOTE)osrframework \"searchfy.py \$$args\""
 
 searchfy:
 	make -s searchfy-shortcut | tee searchfy
@@ -90,7 +92,7 @@ domainfy-shortcut:
 	@echo "#! /usr/bin/env sh"
 	@echo "args=\"\$$@\""
 	@echo "echo \$$args"
-	@echo "docker run --rm --name osrframework -t osrframework \"domainfy.py \$$args\""
+	@echo "docker run --rm --name osrframework -t $(REMOTE)osrframework \"domainfy.py \$$args\""
 
 domainfy:
 	make -s domainfy-shortcut | tee domainfy
@@ -99,7 +101,7 @@ phonefy-shortcut:
 	@echo "#! /usr/bin/env sh"
 	@echo "args=\"\$$@\""
 	@echo "echo \$$args"
-	@echo "docker run --rm --name osrframework -t osrframework \"phonefy.py \$$args\""
+	@echo "docker run --rm --name osrframework -t $(REMOTE)osrframework \"phonefy.py \$$args\""
 
 phonefy:
 	make -s phonefy-shortcut | tee phonefy
@@ -108,7 +110,7 @@ entify-shortcut:
 	@echo "#! /usr/bin/env sh"
 	@echo "args=\"\$$@\""
 	@echo "echo \$$args"
-	@echo "docker run --rm --name osrframework -t osrframework \"entify.py \$$args\""
+	@echo "docker run --rm --name osrframework -t $(REMOTE)osrframework\"entify.py \$$args\""
 
 entify:
 	make -s entify-shortcut | tee entify
@@ -131,7 +133,7 @@ osrframework:
 	git clone https://github.com/i3visio/osrframework.git
 
 theharvester-docker-build: theharvester
-	docker build -f Dockerfile.theharvester -t theharvester .
+	docker build -f Dockerfile.theharvester -t "$(REMOTE)theharvester" .
 
 theharvester-docker-clobber:
 	docker rm -f theharvester 1>/dev/null 2>/dev/null; true
@@ -139,8 +141,7 @@ theharvester-docker-clobber:
 theharvester-shortcut:
 	@echo "#! /usr/bin/env sh"
 	@echo "args=\"\$$@\""
-	@echo "echo \$$args"
-	@echo "docker run --rm --name theharvester -t theharvester \"\$$args\""
+	@echo "echo \$$args"	@echo "docker run --rm --name theharvester -t $(REMOTE)theharvester \"\$$args\""
 
 harvester:
 	make -s theharvester-shortcut | tee harvester

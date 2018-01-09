@@ -1,4 +1,3 @@
 #! /usr/bin/env sh
 args="$@"
-echo $args
-docker run --rm --name theharvester -t theharvester "$args"
+echo $args @echo docker run --rm --name theharvester -t eyedeekay/osint_complex:theharvester "$args"
