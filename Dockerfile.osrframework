@@ -1,0 +1,15 @@
+FROM alpine:edge
+RUN apk update && apk upgrade
+RUN apk add python3 py2-pip bash
+#RUN ln -s /usr/bin/pip2 /usr/bin/pip
+RUN adduser -s bash -h /home/osrframework/ -D -g 'osrframework,,,,' osrframework osrframework
+COPY osrframework /home/osrframework
+WORKDIR /home/osrframework
+RUN python2 setup.py build install
+USER osrframework
+RUN mkdir -p /home/osrframework/.config/OSRFramework
+RUN cp /home/osrframework/config/accounts.cfg /home/osrframework/.config/OSRFramework
+RUN cp /home/osrframework/config/api_keys.cfg /home/osrframework/.config/OSRFramework
+RUN cp /home/osrframework/config/browser.cfg /home/osrframework/.config/OSRFramework
+RUN cp /home/osrframework/config/general.cfg /home/osrframework/.config/OSRFramework
+ENTRYPOINT [ "bash", "-c" ]

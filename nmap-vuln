@@ -1,3 +1,0 @@
-#! /usr/bin/env sh
-export args=$@
-docker run --rm --name nmap-vulners -t nmap-vulners $args
