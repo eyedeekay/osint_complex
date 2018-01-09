@@ -3,22 +3,23 @@ export PREFIX=/usr/local/
 
 dummy:
 
-.build:
+.build: nmap-docker-build osrframework-docker-build theharvester-docker-build
+	touch .build
 
-build: nmap-docker-build osrframework-docker-build theharvester-docker-build
+build: .build
 
 buildclean: nmap-docker-clobber osrframework-docker-clobber theharvester-docker-clobber
 	rm -f .build
 
 clean:
-	rm -f nmap-vuln osrframework-run usufy entify searchfy mailfy domainfy phonefy
+	rm -f nmap-vuln osrframework-run usufy entify searchfy mailfy domainfy phonefy harvester
 
 clobber: clean buildclean
-	rm -rf nmap-vulners osrframework-run
+	rm -rf nmap-vulners osrframework theharvester
 
-rebuild: buildclean build
+rebuild: clobber build osrframework-run
 
-install: build nmap-install osrframework-install
+install: build nmap-install osrframework-install theharvester-install
 
 remove: nmap-remove
 
@@ -129,8 +130,8 @@ osrframework-install: osrframework-run
 osrframework:
 	git clone https://github.com/i3visio/osrframework.git
 
-theharvester-docker-build:
-	docker build Dockerfile.theharvester -F -t theharvester .
+theharvester-docker-build: theharvester
+	docker build -f Dockerfile.theharvester -t theharvester .
 
 theharvester-docker-clobber:
 	docker rm -f theharvester 1>/dev/null 2>/dev/null; true
@@ -144,7 +145,7 @@ theharvester-shortcut:
 harvester:
 	make -s theharvester-shortcut | tee harvester
 
-theharvester-install:
+theharvester-install: harvester
 	install -m755 harvester "$(PREFIX)/bin"
 
 theharvester:
