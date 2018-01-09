@@ -1,11 +1,9 @@
 [submodule "nmap-vulners"]
 	path = nmap-vulners
 	url = http://github.com/vulnersCom/nmap-vulners.git
-
 [submodule "osrframework"]
 	path = osrframework
 	url = http://github.com/i3visio/osrframework.git
-
 [submodule "theharvester"]
 	path = theharvester
 	url = https://github.com/laramies/theharvester.git
