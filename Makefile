@@ -5,9 +5,9 @@ dummy:
 
 .build:
 
-build: nmap-docker-build osrframework-docker-build
+build: nmap-docker-build osrframework-docker-build theharvester-docker-build
 
-buildclean: nmap-docker-clobber osrframework-docker-clobber
+buildclean: nmap-docker-clobber osrframework-docker-clobber theharvester-docker-clobber
 	rm -f .build
 
 clean:
@@ -128,3 +128,24 @@ osrframework-install: osrframework-run
 
 osrframework:
 	git clone https://github.com/i3visio/osrframework.git
+
+theharvester-docker-build:
+	docker build Dockerfile.theharvester -F -t theharvester .
+
+theharvester-docker-clobber:
+	docker rm -f theharvester 1>/dev/null 2>/dev/null; true
+
+theharvester-shortcut:
+	@echo "#! /usr/bin/env sh"
+	@echo "args=\"\$$@\""
+	@echo "echo \$$args"
+	@echo "docker run --rm --name theharvester -t theharvester \"\$$args\""
+
+harvester:
+	make -s theharvester-shortcut | tee harvester
+
+theharvester-install:
+	install -m755 harvester "$(PREFIX)/bin"
+
+theharvester:
+	git clone https://github.com/laramies/theharvester.git
