@@ -1,7 +1,6 @@
 FROM alpine:edge
 RUN apk update && apk upgrade
-RUN apk add python3 py2-pip bash
-#RUN ln -s /usr/bin/pip2 /usr/bin/pip
+RUN apk add py2-pip bash
 RUN adduser -s bash -h /home/osrframework/ -D -g 'osrframework,,,,' osrframework osrframework
 COPY osrframework /home/osrframework
 WORKDIR /home/osrframework

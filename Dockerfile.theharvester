@@ -1,2 +1,8 @@
 FROM alpine:edge
-
+RUN apk update && apk upgrade
+RUN apk add python bash
+RUN adduser -s bash -h /home/harvester/ -D -g 'harvester,,,,' harvester harvester
+COPY theharvester /home/theharvester/
+WORKDIR /home/theharvester/
+USER harvester
+ENTRYPOINT [ "python", "theHarvester.py" ]
